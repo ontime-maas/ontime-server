@@ -10,5 +10,7 @@ const addressController =  require('../controller/addressController');
 router.get('/:id',addressController.getLocationByAddress);
 
 
+// 주소에 대한 좌표를 얻기
+router.get('/:id', addressController.getLocationByAddress);
 
 module.exports = router;
