@@ -3,13 +3,14 @@ const addressService = require('../service/addressService')
 const addressController = {};
 
 addressController.getLocationByAddress= (req,res,next) => {
-    addressService.getAddressInfo(req.params.id)
+    let address = req.query.address
+    addressService.getAddressInfo(address)
     .then((ret) => {
         ret = JSON.parse(ret);
         const responseObject = {
             x : ret.documents[0].x,
             y : ret.documents[0].y,
-            param : req.params.id
+            param : address
         }
         res.send(responseObject);
     })
