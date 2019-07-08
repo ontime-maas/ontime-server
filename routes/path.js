@@ -3,6 +3,9 @@
 const express = require('express');
 const router = express.Router();
 
+const pathService = require('../service/pathService');
+const addressService = require('../service/addressService');
+
 
 // 좌표로 대중교통 길찾기
 router.get('/search/location', (req, res, next) => {
@@ -29,19 +32,40 @@ router.get('/search/location', (req, res, next) => {
 
 // 주소로 대중교통 길찾기
 router.get('/search/address', (req, res, next) => {
-  pathService.getPathByAddress(req.params.id)
+
+  let start = req.query.startAddress;
+  let end = req.query.endAddress;
+
+  addressService.getAddressInfo(start)
     .then((ret) => {
       ret = JSON.parse(ret);
-      const responseObject = {
+      const startObject = {
         x: ret.documents[0].x,
         y: ret.documents[0].y,
-        param: req.params.id
+        param: address
       }
-      res.send(responseObject);
+      addressService.getAddressInfo(end)
+        .then((ret) => {
+          ret = JSON.parse(ret);
+          const endObject = {
+            x: ret.documents[0].x,
+            y: ret.documents[0].y,
+            param: address
+          }
+
+          const resObject = {
+            start: startObject,
+            end: endObject
+          };
+
+          res.send(resObject);
+        })
     })
     .catch((e) => {
       res.send(e);
     })
+
+
 });
 
 function getFirstPub(subPath) {
