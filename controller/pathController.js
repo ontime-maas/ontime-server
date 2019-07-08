@@ -29,9 +29,9 @@ pathController.searchPathBylocation= (req,res,next) => {
 function getFirstPub(subPath){
     for(let i = 0; i<subPath.length; i++){
         if(subPath[i].trafficType == 1){
-            return "1"
+            return 1
         }else if(subPath[i].trafficType == 2){
-            return "2"
+            return 2
         }
     }
 }
