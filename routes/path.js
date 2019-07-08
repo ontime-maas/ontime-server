@@ -52,20 +52,28 @@ router.get('/search/address', (req, res, next) => {
             y: ret.documents[0].y,
             param: address
           }
-
-          const resObject = {
-            start: startObject,
-            end: endObject
-          };
-
-          res.send(resObject);
+          pathService.getPathByLocation(
+              startObject.x, startObject.y,
+              endObject.x, endObject.y)
+            .then((ret) => {
+              ret = JSON.parse(ret);
+              for (let i = 0; i < ret.result.path.length; i++) {
+                let firstPub = getFirstPub(ret.result.path[i].subPath);
+                ret.result.path[i].firstPub = firstPub;
+              }
+              res.send(ret);
+            })
+            .catch((e) => {
+              res.send(e);
+            })
+        })
+        .catch((e) => {
+          res.send(e);
         })
     })
     .catch((e) => {
       res.send(e);
     })
-
-
 });
 
 function getFirstPub(subPath) {
