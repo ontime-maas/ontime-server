@@ -18,7 +18,6 @@ pathService.getPathByLocation = (sx, sy, ex, ey) => {
 
   return new Promise((resolve, reject) => {
     request(options, (err, res, body) => {
-      console.log("dfasdf");
       if (err) {
         reject(err);
       }

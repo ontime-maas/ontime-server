@@ -3,8 +3,6 @@
 const express = require('express');
 const router = express.Router();
 
-
-const addressController = require('../controller/addressController');
 const addressService = require('../service/addressService');
 
 // 주소에 대한 좌표를 얻기

@@ -23,6 +23,7 @@ router.get('/search/location', (req, res, next) => {
         let firstPub = getFirstPub(ret.result.path[i].subPath);
         ret.result.path[i].firstPub = firstPub;
       }
+
       res.send(ret);
     })
     .catch((e) => {
@@ -37,43 +38,47 @@ router.get('/search/address', (req, res, next) => {
   let end = req.query.endAddress;
 
   addressService.getAddressInfo(start)
+  .then((ret) => {
+    ret = JSON.parse(ret);
+    const startObject = {
+      x: ret.documents[0].x,
+      y: ret.documents[0].y,
+    }
+
+    addressService.getAddressInfo(end)
     .then((ret) => {
       ret = JSON.parse(ret);
-      const startObject = {
+      const endObject = {
         x: ret.documents[0].x,
         y: ret.documents[0].y,
-        param: address
       }
-      addressService.getAddressInfo(end)
-        .then((ret) => {
-          ret = JSON.parse(ret);
-          const endObject = {
-            x: ret.documents[0].x,
-            y: ret.documents[0].y,
-            param: address
-          }
-          pathService.getPathByLocation(
-              startObject.x, startObject.y,
-              endObject.x, endObject.y)
-            .then((ret) => {
-              ret = JSON.parse(ret);
-              for (let i = 0; i < ret.result.path.length; i++) {
-                let firstPub = getFirstPub(ret.result.path[i].subPath);
-                ret.result.path[i].firstPub = firstPub;
-              }
-              res.send(ret);
-            })
-            .catch((e) => {
-              res.send(e);
-            })
-        })
-        .catch((e) => {
-          res.send(e);
-        })
+
+      pathService.getPathByLocation(startObject.x, startObject.y, endObject.x, endObject.y)
+      .then((ret) => {
+        ret = JSON.parse(ret);
+  
+        for (let i = 0; i < ret.result.path.length; i++) {
+          let firstPub = getFirstPub(ret.result.path[i].subPath);
+          ret.result.path[i].firstPub = firstPub;
+        }
+
+        res.send(ret);
+      })
+      .catch((e) => {
+        res.send(e);
+      })
     })
     .catch((e) => {
       res.send(e);
     })
+  })
+  .catch((e) => {
+    res.send(e);
+  })
+
+
+  console.log(start);
+  console.log(end);
 });
 
 function getFirstPub(subPath) {
