@@ -77,9 +77,7 @@ router.get('/station/arrive', (req, response, next) => {
     let arsIdd = req.query.arsId;
     let a = "I9IKiG3GwYwHbGGI9Aj9tALcoiJHVP7I6%2F58Lqog0dl7PMENlfwfUkAynzP%2BhWEUi%2FTOJsWbG6gT7pidnCI59w%3D%3D"
     const options = {
-        uri: "http://ws.bus.go.kr/api/rest/stationinfo/getStationByUid"
-
-        // uri: "http://ws.bus.go.kr/api/rest/stationinfo/getStationByUid?serviceKey="+a+"&arsId="+arsIdd
+        uri: "http://ws.bus.go.kr/api/rest/stationinfo/getStationByUid?serviceKey="+a+"&arsId="+arsIdd
         // qs: {
         //   serviceKey: "I9IKiG3GwYwHbGGI9Aj9tALcoiJHVP7I6%2F58Lqog0dl7PMENlfwfUkAynzP%2BhWEUi%2FTOJsWbG6gT7pidnCI59w%3D%3D",
         //   arsId: arsIdd
@@ -92,12 +90,9 @@ router.get('/station/arrive', (req, response, next) => {
         if (err) {
             response.json(err);
         }
-        response.json(res);
-        // let ret = convert.xml2json(body , {compact: true, spaces: 2})
-        // ret = JSON.parse(ret);
-        // response.json(ret.ServiceResult.msgBody.itemList);
-            // console.log(ret.ServiceResult.msgBody[0].itemList);
-            // response.json(ret.ServiceResult.msgBody[0].itemList);
+        let ret = convert.xml2json(body , {compact: true, spaces: 2})
+        ret = JSON.parse(ret);
+        response.json(ret.ServiceResult.msgBody.itemList);
     })
 });
 
