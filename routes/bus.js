@@ -88,7 +88,7 @@ router.get('/station/arrive', (req, response, next) => {
     
     request(options, (err, res, body) => {
         if (err) {
-            response.json(JSON.parse(err));
+            response.json(err);
         }
         let ret = convert.xml2json(body , {compact: true, spaces: 2})
         ret = JSON.parse(ret);
