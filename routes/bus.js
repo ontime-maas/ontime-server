@@ -8,9 +8,9 @@ const tmoneyRequest = request.defaults({
         'Content-type': 'application/x-www-form-urlencoded',
         'x-Gateway-APIKey': secret.tmoneyApiKey
     }
-  })
-
-
+  });
+// const parseString = require('xml2js').parseString;
+var convert = require('xml-js');
 // 대중교통 정류장 검색
 // 안드로이드에서 정류장 arsId 가져오기
 router.get('/station', (req, response, next) => {
@@ -87,11 +87,14 @@ router.get('/station/arrive', (req, response, next) => {
       console.log(options.qs);
     
     request(options, (err, res, body) => {
-        
         if (err) {
             response.json(JSON.parse(err));
         }
-        response.json(body);
+        let ret = convert.xml2json(body , {compact: true, spaces: 2})
+        ret = JSON.parse(ret);
+        response.json(ret.ServiceResult.msgBody.itemList);
+            // console.log(ret.ServiceResult.msgBody[0].itemList);
+            // response.json(ret.ServiceResult.msgBody[0].itemList);
     })
 });
 
