@@ -90,9 +90,10 @@ router.get('/station/arrive', (req, response, next) => {
         if (err) {
             response.json(err);
         }
-        let ret = convert.xml2json(body , {compact: true, spaces: 2})
-        ret = JSON.parse(ret);
-        response.json(ret.ServiceResult.msgBody.itemList);
+        response.json(res);
+        // let ret = convert.xml2json(body , {compact: true, spaces: 2})
+        // ret = JSON.parse(ret);
+        // response.json(ret.ServiceResult.msgBody.itemList);
             // console.log(ret.ServiceResult.msgBody[0].itemList);
             // response.json(ret.ServiceResult.msgBody[0].itemList);
     })
